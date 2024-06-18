@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS "patients_full_name_idx" ON "patients" ("full_name");

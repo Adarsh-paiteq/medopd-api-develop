@@ -1,0 +1,35 @@
+version: '3'
+services:
+  # redis:
+  #   image: redis/redis-stack-server:7.2.0-v2
+  #   container_name: redis
+  #   # ports:
+  #   #   - 6379:6379
+  #   volumes:
+  #     - redis_data:/data
+  #     - ./redis/redis.conf:/redis-stack.conf
+  develop:
+    image: ghcr.io/paiteq/medopd-api:prd
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+    restart: on-failure:5
+    command:
+      - /bin/bash
+      - -c
+      - |
+        npm run publish:schema
+        npm run migrate:apply
+        npm run start:prod
+    # depends_on:
+    #   - redis
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      - DOPPLER_TOKEN=${DOPPLER_TOKEN}
+      - TZ=UTC
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+# volumes:
+#   redis_data:

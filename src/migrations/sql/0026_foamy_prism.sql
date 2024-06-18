@@ -1,0 +1,1 @@
+ALTER TABLE "prescriptions" ALTER COLUMN "updated_at" SET NOT NULL;
